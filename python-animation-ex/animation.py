@@ -2,10 +2,9 @@ from turtle import *
 from tkinter import *
 import tkinter.font as font
 from tkinter.ttk import *
-from fcfs import fcfs_fun
 
 hd_name = {1:"FCSF - First Come First Serve", 2:"SSTF - Shortest Seek Time First.", 3:"SCAN - Elevator", 4:"C-SCAN - Circular Scan", 5:"LOOK", 6:"C - LOOK"}
-op, ls, hd = (1, [82,170,43,140,24,16,190], 50)
+op, ls, hd = (1, [82,170,43,140,24,16,190,60], 50)
 title = hd_name[op]
 
 new_win = Tk()
@@ -24,11 +23,43 @@ screen.bgcolor('black')
 screen.setworldcoordinates(-30, -30, 210, 10)
 
 tim = RawTurtle(screen)
+tim2 = RawTurtle(screen)
 
-tim.color('red')
-tim.shape('turtle')
+tim2.color('light gray')
+tim2.shape("circle")
+tim2.turtlesize(.3, .3, 1)
+tim2.pensize(2)
+tim2.speed(0.05)
+tim2.penup()
+
+tim2.goto(-20, 0)
+tim2.pendown()
+tim2.right(90)
+tim2.forward(17)
+tim2.left(90)
+tim2.forward(220)
+tim2.left(90)
+tim2.forward(20)
+tim2.left(90)
+tim2.forward(220)
+tim2.left(90)
+tim2.forward(4)
+
+tim2.left(90)
+
+for num in ls:
+    tim2.penup()
+    tim2.goto(num, 0)
+    tim2.stamp()
+    tim2.write(num, False, align="center", font=("Courier", 12, "bold"))
+    tim2.pendown()
+    tim2.right(90)
+    tim2.forward(15)
+    tim2.left(90)
+
+tim.color('light blue')
 tim.shape("circle")
-tim.turtlesize(.3, .3, 1)
+tim.turtlesize(.5, .5, 1)
 tim.pensize(3)
 tim.speed(1)
 n = len(ls)
@@ -39,11 +70,11 @@ for i in range(0, n):
         tim.goto(ls[i], y)
         tim.pendown()
         tim.stamp()
-        tim.write(ls[i], False, align="right")
+        # tim.write(ls[i], False, align="right")
     else:           # Disktim draws its path to each request
         tim.goto(ls[i], y-2)
         tim.stamp()
-        tim.write(ls[i], False, align="right")
+        # tim.write(ls[i], False, align="right")
         y -= 2
 tim.hideturtle()
 tim.speed(0)
