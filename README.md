@@ -14,4 +14,4 @@
 
 ### Here is the demo video
 
-![Farmers Market Finder Demo](python-animation-ex/demo.gif)
+![Farmers Market Finder Demo](python-animation-ex/demo_2.gif)
