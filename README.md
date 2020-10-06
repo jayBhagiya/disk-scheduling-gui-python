@@ -1,6 +1,6 @@
 # Disk Scheduling GUI in Python
 
-### Python modelues that used in this projects 
+### Python modules used in this projects 
 1. tkinter
 2. turtle
 
