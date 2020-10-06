@@ -2,6 +2,7 @@
 
 from turtle import *
 from tkinter import *
+from time import sleep
 from tkinter.ttk import *
 from fcfs import fcfs_fun
 from sstf import sstf_fun
@@ -87,20 +88,24 @@ def openNewWindow():
         if i == 0:      # No drawing while the disktim goes to start position
             tim.penup()
             tim.goto(ls[i], y)
+            sleep(0.5)
             tim.pendown()
             tim.stamp()
             # tim2.penup()
             # tim2.goto(ls[i], y)
             # tim2.pendown()
             tim.write("Head : {}".format(ls[i]), False, align="left", font=("Courier", 12, "bold"))
+            sleep(0.5)
         else:           # Disktim draws its path to each request
             tim.goto(ls[i], y-2)
+            sleep(0.5)
             tim.stamp()
             # tim2.penup()
             # tim2.goto(ls[i], y-2)
             # tim2.pendown()
             tim.write(ls[i], False, align="left", font=('Courier', 12, 'bold'))
             y -= 2
+            sleep(0.5)
     tim.hideturtle()
     tim.speed(0)
     tim.penup()
