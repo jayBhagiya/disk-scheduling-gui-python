@@ -43,4 +43,4 @@ if __name__ == "__main__":
     head = int(input("Enter Read/Write arm positon : "))
 
     seq_list, total = sstf_fun(num_list, head)
-    print('Total seek time is : {}'.format(total))
+    print('Total seek time is : {}'.format(seq_list))

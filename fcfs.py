@@ -28,4 +28,4 @@ if __name__ == '__main__':
         print("All the sequence number should be integer..")
     head = int(input("Enter Read/Write arm positon : "))
 
-    fcfs_fun(num_list, head)
+    ls, tot = fcfs_fun(num_list, head)
