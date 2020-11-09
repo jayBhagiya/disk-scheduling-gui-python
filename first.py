@@ -2,8 +2,11 @@
 
 from turtle import *
 from tkinter import *
+from tkinter import messagebox
 from time import sleep
 from tkinter.ttk import *
+import matplotlib.pyplot as plt
+
 from fcfs import fcfs_fun
 from sstf import sstf_fun
 from scan import scan_fun
@@ -27,17 +30,76 @@ def get_data():
     hd = head_var.get()
     op = var.get()
 
-    return (int(op), ls, int(hd))
+    try:
+        num_list = [int(num) for num in ls.split(',')]
+    except:
+        messagebox.showerror('Error', 'Please enter number in above sequence and in integer..')
+        print("All the sequence number should be integer..")
 
+    try:
+        n_hd = int(hd)
+    except:
+        messagebox.showerror('Error', 'Please enter the head position')
+
+    return (int(op), num_list, n_hd)
+
+# def show_all_graph():
+#     op, num_list, hd = get_data()
+    
+#     y = [1, 2, 3, 4, 5, 6, 7, 8]
+
+#     x1, _ = fcfs_fun(num_list, hd)
+#     x2, _ = sstf_fun(num_list, hd)
+#     x3, _ = scan_fun(num_list, hd)
+#     x4, _ = c_scan_fun(num_list, hd)
+#     x5, _ = look_fun(num_list, hd)
+#     x6, _ = c_look_fun(num_list, hd)
+
+#     plt.plot(x1, y, label = "fcfs")
+#     plt.plot(x2, y, label = "sstf")
+#     plt.plot(x3, y, label = "scan")
+#     plt.plot(x4, y, label = "c-scan")
+#     plt.plot(x5, y, label = "look")
+#     plt.plot(x6, y, label = "c-look")
+
+#     plt.legend()
+#     plt.show()
+
+def show_seek_time():
+    left = [num for num in range(1,7)]
+
+    op, num_list, hd = get_data()
+
+    height = [0, 0, 0, 0, 0, 0]
+
+    _, height[0] = fcfs_fun(num_list, hd)
+    _, height[1] = sstf_fun(num_list, hd)
+    _, height[2] = scan_fun(num_list, hd)
+    _, height[3] = c_scan_fun(num_list, hd)
+    _, height[4] = look_fun(num_list, hd)
+    _, height[5] = c_look_fun(num_list, hd)
+
+    al_label = ['fcfs', 'sstf', 'scan', 'c-scan', 'look', 'c-look']
+
+    plt.bar(left, height, tick_label = al_label, width = 0.8, color = ['red', 'green', 'blue', 'pink', 'orange', 'gray'] )
+
+    plt.show()
+
+def out_str(ls):
+    str_ls = ""
+    
+    for i in range(1, len(ls)):
+        if ls[i-1] > ls[i]:
+            _temp = "( {} - {} ) + ".format(ls[i-1], ls[i])
+        else:
+            _temp = "( {} - {} ) + ".format(ls[i], ls[i-1])
+        str_ls += _temp
+
+    return str_ls
 
 def openNewWindow():
 
-    op, ls_str, hd = get_data()
-    
-    try:
-        num_list = [int(num) for num in ls_str.split(',')]
-    except:
-        print("All the sequence number should be integer..")
+    op, num_list, hd = get_data()
 
     if op == 1:
         ls, total = fcfs_fun(num_list, hd)
@@ -70,12 +132,6 @@ def openNewWindow():
     screen.setworldcoordinates(-30, -30, 210, 10)
 
     tim = RawTurtle(screen)
-    # tim2 = RawTurtle(screen)
-    # tim2.color('green')
-    # tim2.shape('circle')
-    # tim2.turtlesize(.3, .3, 3)
-    # tim2.pensize(3)
-    # tim2.speed(0.05)
 
     tim.color('light blue')
     tim.shape("circle")
@@ -91,18 +147,12 @@ def openNewWindow():
             sleep(0.5)
             tim.pendown()
             tim.stamp()
-            # tim2.penup()
-            # tim2.goto(ls[i], y)
-            # tim2.pendown()
             tim.write("Head : {}".format(ls[i]), False, align="left", font=("Courier", 12, "bold"))
             sleep(0.5)
         else:           # Disktim draws its path to each request
             tim.goto(ls[i], y-2)
             sleep(0.5)
             tim.stamp()
-            # tim2.penup()
-            # tim2.goto(ls[i], y-2)
-            # tim2.pendown()
             tim.write(ls[i], False, align="left", font=('Courier', 12, 'bold'))
             y -= 2
             sleep(0.5)
@@ -111,8 +161,9 @@ def openNewWindow():
     tim.penup()
     tim.goto(100, 5)
     tim.pendown
-    msg = "Total Seek time is : " + str(total)
-    tot_msg = Label(canvas, font=('Courier', 12), text = msg)
+
+    msg = "Total seek time is : " + str(total)
+    tot_msg = Label(canvas, font=('Courier', 18), text = msg)
     tot_msg.configure(background='black', foreground='white')
     tot_msg.place(relx=0.5, rely = 0.8, anchor=CENTER)
 
@@ -135,7 +186,9 @@ def main_ui():
         rb = Radiobutton(root, text=hd_name[i], variable=var, value=i)
         rb.place(relx = 0.3, rely = (0.45 + i/20), anchor = W )
 
-    btn = Button(root, text = 'Simulate !', command = openNewWindow)
+    btn = Button(root, text = 'Show Animation !', command = openNewWindow)
+    btn2 = Button(root, text = 'Show Bar Graph !', command = show_seek_time)
+    # btn3 = Button(root, text = 'Show all Graph !', command = show_all_graph)
 
     heading.place(relx = 0.5, rely = 0.1, anchor = CENTER)
     desc.place(relx = 0.5, rely = 0.2, anchor = CENTER)
@@ -143,7 +196,9 @@ def main_ui():
     req_entry.place(relx = 0.65, rely = 0.3, width=320, anchor = CENTER)
     head_lbl.place(relx = 0.2, rely = 0.4, anchor = CENTER)
     head_entry.place(relx = 0.65, rely = 0.4, width=320, anchor = CENTER)
-    btn.place(relx = 0.5, rely = 0.9, anchor = CENTER)
+    btn.place(relx = 0.5, rely = 0.85, anchor = CENTER)
+    btn2.place(relx = 0.5, rely = 0.93, anchor = CENTER)
+    # btn3.place(relx = 0.6, rely = 0.93, anchor = CENTER)
 
     root.mainloop()
 
